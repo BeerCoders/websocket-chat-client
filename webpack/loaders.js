@@ -22,6 +22,10 @@ module.exports = [
         loader: 'raw'
     },
     {
+        test: /\.json/,
+        loader: 'file'
+    },
+    {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'url-loader?limit=10000&minetype=application/font-woff'
     },

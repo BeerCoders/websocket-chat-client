@@ -1,18 +1,24 @@
-export class HomeController {
-    constructor(mySocket) {
-        this.messages = [];
-        this.message = null;
-        this.nick = null;
-        this.socket = require('socket.io-client')('http://chat.beercoders.pl:3000');
 
-        socket.on('message', function(data) {
-            addMessage(data['message'], data['nick'], new Date().toISOString());
+
+export class HomeController {
+    constructor(socketio) {
+        this.messages = [];
+        this.message = "test";
+        this.nick = "test";
+        this.socket = socketio;
+
+
+        this.sockets.on('connect', function () {
+           console.log("Connected");
+        });
+
+        this.sockets.on('message', function(data) {
+            this.addMessage(data['message'], data['nick'], new Date().toISOString());
         });
     }
 
     setNick(nick) {
         this.nick = nick;
-        socket.emit('setNick', this.nick);
     }
 
     addMessage(msg, nick, time) {
@@ -25,7 +31,7 @@ export class HomeController {
 
     sentMessage() {
         if (this.message != null) {
-            socket.emit('message', {
+            this.socket.emit('message', {
                 message: this.message,
                 nick: this.nick
             });
@@ -36,5 +42,5 @@ export class HomeController {
 }
 
 HomeController.$inject = [
- 'io'
+ 'socketio'
 ];
