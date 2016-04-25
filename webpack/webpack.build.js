@@ -18,12 +18,18 @@ module.exports = {
     resolveLoader: {
         modulesDirectories: ["node_modules"]
     },
-    devtool: "source-map",
-    devServer: {
-        port: 8080,
-        historyApiFallback: true
-    },
     plugins: [
+        new webpack.ProvidePlugin({_: 'lodash'}),
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.min.js'),
+        new webpack.optimize.UglifyJsPlugin(
+            {
+                warning: false,
+                mangle: true,
+                comments: false
+            }
+        ),
         new HtmlWebpackPlugin({
             template: './src/index.html',
             inject: 'body',
@@ -37,7 +43,7 @@ module.exports = {
             'window.jquery': 'jquery'
         })
     ],
-    module:{
+    module: {
         loaders: loaders
     }
 };

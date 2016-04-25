@@ -1,36 +1,32 @@
-import "./../resources/styles/main.sass";
-
-import "socket.io-client";
-
-import {HomeComponent} from "./components/HomeComponent";
+/**
+ * This file is part of the conference II Forum Ekonomiczne package.
+ *
+ * (c) BeerCoders <contact@beercoders.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+ 
+import {config as routesConfig} from "./configs/routes";
+import {SocketComponent} from "./components/SocketComponent";
 
 const appName = 'app';
 const requirements = [
+    'ui.router',
+    'btford.socket-io'
 ];
 
 angular.module(appName, requirements)
-    .component("home", new HomeComponent())
-    .factory('socketio', ['$rootScope', ($rootScope) => {
-        let socket = io.connect("http://localhost:3700");
+    .component("socket", new SocketComponent())
+    .config(routesConfig)
+    .factory('socket', ['socketFactory', (socketFactory) => {
+        let myIoSocket = io.connect('localhost:3700');
 
-        return {
-            on: (eventName, callback) => {
-                socket.on(eventName, () => {
-                   let args = arguments;
-                    $rootScope.$apply(() => {
-                        callback.apply(socket, args);
-                    });
-                });
-            },
-            emit: (eventName, data, callback) => {
-                socket.emit(eventName, data, () => {
-                    let args = arguments;
-                    $rootScope.$apply(() => {
-                        callback.apply(socket, args);
-                    });
-                });
-            }
-        };
+        let socket = socketFactory({
+            ioSocket: myIoSocket
+        });
+
+        return socket;
     }])
 ;
 
