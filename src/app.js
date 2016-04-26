@@ -21,7 +21,7 @@ angular.module(appName, requirements)
     .component("socket", new SocketComponent())
     .config(routesConfig)
     .factory('socket', ['socketFactory', (socketFactory) => {
-        let myIoSocket = io.connect('localhost:3700');
+        let myIoSocket = io.connect('http://chat.beercoders.pl:3700');
 
         let socket = socketFactory({
             ioSocket: myIoSocket
