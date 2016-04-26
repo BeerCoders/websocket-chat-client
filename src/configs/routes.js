@@ -16,7 +16,7 @@ export function config($stateProvider, $locationProvider, $urlRouterProvider) {
 
     $stateProvider
         .state('main', {
-            url: '/main',
+            url: '/',
             template: '<socket></socket>'
         });
 }

@@ -9,14 +9,54 @@
 
 export class SocketController {
 
-    constructor(socket) {
+    constructor(socket, $scope) {
         this.socket = socket;
-        this.socket.on('connect', function () {
-           console.log("Connected");
+        this.scope = $scope;
+        this.scope.messages = [
+            {nick: "BeerCoders Chat", message: "welcome to the BeerCoders chat", time: new Date().toISOString()}
+        ];
+        this.message = null;
+        this.nick = null;
+
+        this.socket.on('online', function (data) {
+            $scope.online = data;
+        });
+
+        this.socket.on('message', function (data) {
+            $scope.messages.push({
+                message: data.message,
+                nick: data.nick,
+                time: new Date().toISOString()
+            });
         });
     }
 
-    
+    setNick(nick) {
+        this.nick = nick;
+        this.socket.emit('getOnline', {});
+    }
+
+    addMessage(message, nick) {
+        this.scope.messages.push({
+            message: message,
+            nick: nick,
+            time: new Date().toISOString()
+        });
+    }
+
+    sentMessage() {
+        if (this.message != null) {
+            this.socket.emit('message', {
+                message: this.message,
+                nick: this.nick
+            });
+            this.addMessage(this.message,"Me")
+
+            this.message = null;
+        }
+    }
+
+
 }
 
-SocketController.$inject = ['socket'];
+SocketController.$inject = ['socket', '$scope'];

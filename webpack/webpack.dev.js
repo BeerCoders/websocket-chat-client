@@ -30,7 +30,6 @@ module.exports = {
             hash: true
         }),
         new webpack.ProvidePlugin({
-            moment: 'moment',
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',

@@ -1,5 +1,19 @@
 @import "vars"
 @import "mixins"
 @import "~bootstrap-sass/assets/stylesheets/bootstrap"
-@import "~font-awesome/scss/font-awesome"
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700)
+
+
+.chatWindow
+  height: 600px
+  overflow: auto
+  p
+    .nick
+      font-size: 1.2em
+      font-weight: bold
+
+.chatForm
+  position: relative
+  bottom: 0
+  left: 0
+  margin-bottom: 50px
